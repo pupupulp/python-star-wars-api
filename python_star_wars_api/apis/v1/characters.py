@@ -1,6 +1,6 @@
 from arrested import Resource
 from arrested.contrib.kim_arrested import KimEndpoint
-from arrested.contrib.sql_alchemy import DBListMixin, DBCreateMixin
+from arrested.contrib.sql_alchemy import DBListMixin, DBCreateMixin, DBObjectMixin
 
 from python_star_wars_api.models import db, Character
 from .mappers import CharacterMapper
@@ -17,4 +17,15 @@ class CharactersIndexEndpoint(KimEndpoint, DBListMixin, DBCreateMixin):
 		stmt = db.session.query(Character)
 		return stmt
 
+class CharacterObjectEndpoint(KimEndpoint, DBObjectMixin):
+	name = 'object'
+	url = '/<string:obj_id>'
+	mapper_class = CharacterMapper
+	model = Character
+
+	def get_query(self):
+		stmt = db.session.query(Character)
+		return stmt
+
 characters_resource.add_endpoint(CharactersIndexEndpoint)
+characters_resource.add_endpoint(CharactersObjectEndpoint)
