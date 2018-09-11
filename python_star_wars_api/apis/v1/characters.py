@@ -1,13 +1,13 @@
 from arrested import Resource
 from arrested.contrib.kim_arrested import KimEndpoint
-from arrested.contrib.sql_alchemy import DBListMixin
+from arrested.contrib.sql_alchemy import DBListMixin, DBCreateMixin
 
 from python_star_wars_api.models import db, Character
 from .mappers import CharacterMapper
 
 characters_resource = Resource('characters', __name__, url_prefix = '/characters')
 
-class CharactersIndexEndpoint(KimEndpoint, DBListMixin):
+class CharactersIndexEndpoint(KimEndpoint, DBListMixin, DBCreateMixin):
 	name = 'list'
 	many = True
 	mapper_class = CharacterMapper
